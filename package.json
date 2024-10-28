@@ -9,7 +9,7 @@
     "email": "hello@elian.codes",
     "url": "https://www.elian.codes/"
   },
-  "homepage": "https://brutal.elian.codes",
+  "homepage": "https://hackreality.tech",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -41,6 +41,6 @@
     "unocss": "^0.57.7"
   },
   "engines": {
-    "node": "16.x"
+    "node": "20.x"
   }
 }
