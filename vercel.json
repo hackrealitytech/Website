@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "buildCommand": "bun run build",
+  "devCommand": "bun run dev",
+  "framework": "astro",
+  "functions": {
+    "api/**/*": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
