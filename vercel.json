@@ -5,10 +5,6 @@
   "devCommand": "bun run dev",
   "installCommand": "bun install",
   "functions": {
-    "api/**/*": {
-      "runtime": "@vercel/node@18.0.0",
-      "maxDuration": 10
-    },
     "src/pages/**/*": {
       "runtime": "@vercel/node@18.0.0",
       "maxDuration": 10
