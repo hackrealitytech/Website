@@ -202,63 +202,73 @@ const menuitems = [
   const profileMenuMobile = document.getElementById('profile-menu-mobile');
   const profileButton = document.getElementById('profile-button');
   const dropdownContent = document.getElementById('dropdown-content');
-  const profileImage = document.getElementById('profile-image');
-  const profileImageMobile = document.getElementById('profile-image-mobile');
+  const profileImage = document.getElementById('profile-image') as HTMLImageElement;
+  const profileImageMobile = document.getElementById('profile-image-mobile') as HTMLImageElement;
   const logoutButton = document.getElementById('logout-button');
 
-  // Features dropdown functionality
-  const featuresDropdownTriggers = document.querySelectorAll('.features-dropdown-trigger');
-  const featuresDropdownContents = document.querySelectorAll('.features-dropdown-content');
-
-  // Initialize UI
+  // Initialize UI with explicit display styles
   function initializeUI() {
-    // Show auth buttons by default
     if (authButtons) {
       authButtons.style.display = 'flex';
       authButtons.classList.remove('hidden');
     }
     
-    // Hide profile menus by default
-    if (profileMenu) profileMenu.style.display = 'none';
-    if (profileMenuMobile) profileMenuMobile.style.display = 'none';
-    if (dropdownContent) dropdownContent.style.display = 'none';
+    if (profileMenu) {
+      profileMenu.style.display = 'none';
+      profileMenu.classList.add('hidden');
+    }
+    if (profileMenuMobile) {
+      profileMenuMobile.style.display = 'none';
+      profileMenuMobile.classList.add('hidden');
+    }
+    if (dropdownContent) {
+      dropdownContent.style.display = 'none';
+      dropdownContent.classList.add('hidden');
+    }
+
+    // Initialize profile images with placeholder
+    if (profileImage) {
+      profileImage.src = '/placeholder-avatar.png';
+      profileImage.style.display = 'none';
+    }
+    if (profileImageMobile) {
+      profileImageMobile.src = '/placeholder-avatar.png';
+      profileImageMobile.style.display = 'none';
+    }
   }
 
-  const closeAllFeaturesDropdowns = () => {
-    featuresDropdownContents.forEach((dropdown) => {
-      dropdown.classList.add('hidden');
-    });
-    featuresDropdownTriggers.forEach((trigger) => {
-      trigger.setAttribute('aria-expanded', 'false');
-    });
-  };
-
-  // Update profile images
+  // Update profile images with proper error handling
   const updateProfileImage = (user: User | null) => {
-    const images = [profileImage, profileImageMobile];
-    
-    images.forEach(img => {
+    const updateImage = (img: HTMLImageElement | null, user: User | null) => {
       if (!img || !user) return;
 
-      const imgElement = img as HTMLImageElement;
       const photoURL = user.photoURL;
-      
-      if (photoURL) {
-        imgElement.setAttribute('referrerpolicy', 'no-referrer');
-        imgElement.src = photoURL;
-
-        imgElement.onerror = () => {
-          const proxyUrl = `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(photoURL)}`;
-          imgElement.src = proxyUrl;
-
-          imgElement.onerror = () => {
-            imgElement.src = '/placeholder-avatar.png';
-          };
-        };
-      } else {
-        imgElement.src = '/placeholder-avatar.png';
+      if (!photoURL) {
+        img.src = '/placeholder-avatar.png';
+        img.style.display = 'block';
+        return;
       }
-    });
+
+      img.setAttribute('referrerpolicy', 'no-referrer');
+      img.style.display = 'block';
+      
+      // Try loading the image directly
+      img.src = photoURL;
+
+      img.onerror = () => {
+        // If direct load fails, try proxy
+        const proxyUrl = `https://images1-focus-opensocial.googleusercontent.com/gadgets/proxy?container=focus&refresh=2592000&url=${encodeURIComponent(photoURL)}`;
+        img.src = proxyUrl;
+
+        img.onerror = () => {
+          // If proxy fails, use placeholder
+          img.src = '/placeholder-avatar.png';
+        };
+      };
+    };
+
+    updateImage(profileImage, user);
+    updateImage(profileImageMobile, user);
   };
 
   // Update UI based on auth state
@@ -270,61 +280,56 @@ const menuitems = [
     }
 
     if (user) {
-      // Hide auth buttons
+      // User is logged in
       authButtons.style.display = 'none';
       authButtons.classList.add('hidden');
-      // Show profile menus
-      profileMenu.style.display = 'block';
-      profileMenuMobile.style.display = 'block';
+      
+      profileMenu.style.display = 'flex';
+      profileMenu.classList.remove('hidden');
+      
+      profileMenuMobile.style.display = 'flex';
+      profileMenuMobile.classList.remove('hidden');
+      
+      if (profileImage) profileImage.style.display = 'block';
+      if (profileImageMobile) profileImageMobile.style.display = 'block';
+      
       updateProfileImage(user);
     } else {
-      // Show auth buttons
+      // User is logged out
       authButtons.style.display = 'flex';
       authButtons.classList.remove('hidden');
-      // Hide profile menus
+      
       profileMenu.style.display = 'none';
+      profileMenu.classList.add('hidden');
+      
       profileMenuMobile.style.display = 'none';
-      if (dropdownContent) dropdownContent.style.display = 'none';
+      profileMenuMobile.classList.add('hidden');
+      
+      if (profileImage) profileImage.style.display = 'none';
+      if (profileImageMobile) profileImageMobile.style.display = 'none';
+      
+      if (dropdownContent) {
+        dropdownContent.style.display = 'none';
+        dropdownContent.classList.add('hidden');
+      }
     }
   };
 
-  // Setup event listeners when DOM is ready
+  // Initialize when DOM is ready
   document.addEventListener('DOMContentLoaded', () => {
     initializeUI();
-
-    featuresDropdownTriggers.forEach((trigger, index) => {
-      trigger.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const content = featuresDropdownContents[index];
-        const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-
-        closeAllFeaturesDropdowns();
-
-        if (!isExpanded) {
-          content?.classList.remove('hidden');
-          trigger.setAttribute('aria-expanded', 'true');
-        }
-      });
-    });
-
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', (e) => {
-      const target = e.target as Element;
-      
-      if (!target.closest('.features-dropdown-trigger')) {
-        closeAllFeaturesDropdowns();
-      }
-
-      if (!profileMenu?.contains(target)) {
-        if (dropdownContent) dropdownContent.style.display = 'none';
-      }
+    
+    // Add auth observer
+    onAuthStateChanged(auth, (user: User | null) => {
+      updateUI(user);
     });
 
     // Toggle profile dropdown
     profileButton?.addEventListener('click', () => {
       if (dropdownContent) {
-        dropdownContent.style.display = 
-          dropdownContent.style.display === 'none' ? 'block' : 'none';
+        const isHidden = dropdownContent.style.display === 'none';
+        dropdownContent.style.display = isHidden ? 'block' : 'none';
+        dropdownContent.classList.toggle('hidden');
       }
     });
 
@@ -337,14 +342,10 @@ const menuitems = [
         console.error('Error al cerrar sesión:', error);
       }
     });
-
-    // Initialize auth observer
-    onAuthStateChanged(auth, updateUI);
-    
-    // Initial UI update
-    updateUI(auth.currentUser);
   });
 
-  // Also run initialization immediately
+  // Run initialization immediately
   initializeUI();
+  // Initial UI update with current auth state
+  updateUI(auth.currentUser);
 </script>
