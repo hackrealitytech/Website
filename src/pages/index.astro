@@ -1,0 +1,39 @@
+---
+
+/* Implementar correctamente el Contador ✅
+Implementar los iconos correctamente ✅
+Buscar Cursor ❌
+Implementar Navbar Astro-Navbar ✅
+Hacer el logo webp o que no parpadee en la carga ❌
+Buscar Fondo por JS (TypeScript) para que no se un fondo plano ✅
+Hacer que el fade-in sea conforme se vaya bajando la página ❌
+Modificar Footer para hacerlo según la marca empresarial ❌
+*/
+
+
+// Ended:✅ For Do:❌
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Index_Components/FirstTitle.astro';
+import CountdownTimer from '../components/Index_Components/CountdownTimer.astro';
+import AboutSection from '../components/Index_Components/AboutSection.astro';
+import ScheduleSection from '../components/Index_Components/ScheduleSection.astro';
+import SponsorsSection from '../components/Index_Components/SponsorSection.astro';
+import FutureEventsSection from '../components/Index_Components/FutureEventsSection.astro';
+import Footer from '../components/Footer/Footer.astro';
+
+
+import '../styles/global.css';
+import '../styles/script.js';
+---
+
+<Layout title="HackReality 2024">
+  <main class="container mx-auto px-4 pt-12 text-white fade-in">
+    <Card class="fade-in hover-tilt"/>
+    <CountdownTimer targetDate="2024-12-13T23:59:59" class="fade-in"/>
+    <AboutSection class="fade-in"/>
+    <ScheduleSection class="fade-in"/>
+    <SponsorsSection class="fade-in"/>
+    <FutureEventsSection class="fade-in"/>
+  </main>
+  <Footer class="fade-in"/>
+</Layout>

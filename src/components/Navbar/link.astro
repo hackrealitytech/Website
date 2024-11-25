@@ -1,0 +1,139 @@
+---
+interface Props {
+  href: string;
+  size?: "md" | "lg";
+  block?: boolean;
+  style?: "outline" | "primary" | "inverted" | "muted" | "logout";
+  class?: string;
+  [x: string]: any;
+}
+
+const {
+  href,
+  block,
+  size = "lg" as "md" | "lg",
+  style = "primary",
+  class: className,
+  ...rest
+}: Props = Astro.props;
+
+const sizes = {
+  lg: "px-5 py-2.5",
+  md: "px-4 py-2",
+};
+
+const styles = {
+  outline: "bg-white border-2 border-black hover:bg-gray-900 text-black",
+  primary: "bg-[#c57dff] text-black hover:bg-purple-600 hover:text-black font-bold border-2 border-transparent",
+  inverted: "bg-white text-black border-2 border-transparent",
+  muted: "bg-[#81E77A] hover:bg-green-400 hover:text-black font-bold border-2 border-transparent",
+  logout: "bg-red-500 text-white hover:bg-red-600 font-bold border-2 border-transparent",
+};
+---
+<a
+  is="auth-button"
+  href={href}
+  data-style={style}
+  class={[
+    "rounded text-center transition focus-visible:ring-2 ring-offset-2 ring-gray-200",
+    block && "w-full",
+    sizes[size],
+    styles[style],
+    className,
+  ].filter(Boolean).join(' ')}
+  {...rest}
+>
+  <slot />
+</a>
+
+
+<script>
+  import { auth } from '@/lib/firebase';
+  import { onAuthStateChanged, signOut } from 'firebase/auth';
+  
+  const styles = {
+    logout: "bg-red-500 text-white hover:bg-red-600 font-bold border-2 border-transparent",
+    muted: "bg-[#81E77A] hover:bg-green-400 hover:text-black font-bold border-2 border-transparent",
+  };
+  
+  
+  class AuthButton extends HTMLElement {
+    private static authStateInitialized = false;
+  
+    constructor() {
+      super();
+      this.handleClick = this.handleClick.bind(this);
+      this.addEventListener("click", this.handleClick);
+    }
+  
+    async handleClick(event: Event) {
+      event.preventDefault();
+      const href = this.getAttribute("href") ?? "";
+      const style = this.getAttribute("data-style") ?? "";
+  
+      if (style === "logout") {
+        // Actualizar UI inmediatamente antes del signOut
+        this.updateAllButtons(false);
+        try {
+          await signOut(auth);
+          window.location.href = "/";
+        } catch (error) {
+          console.error('Error al cerrar sesión:', error);
+          // Si hay error, revertir la UI
+          this.updateAllButtons(true);
+        }
+      } else if (href === "/auth") {
+        window.location.href = href;
+      } else {
+        window.location.href = href;
+      }
+    }
+  
+    updateAllButtons(isLoggedIn: boolean) {
+      // Encontrar todos los botones de autenticación
+      const buttons = document.querySelectorAll('a[is="auth-button"]');
+      buttons.forEach((button: Element) => {
+        const authType = button.getAttribute("data-auth-type");
+        
+        if (authType === "login") {
+          if (isLoggedIn) {
+            button.textContent = "Logout";
+            button.setAttribute("data-style", "logout");
+            button.className = button.className.replace(/bg-\[#.*?\].*?(?=\s|$)/, styles.logout);
+          } else {
+            button.textContent = "Log in";
+            button.setAttribute("data-style", "muted");
+            button.className = button.className.replace(/bg-red-500.*?(?=\s|$)/, styles.muted);
+          }
+        } else if (authType === "signup") {
+          (button as HTMLElement).style.display = isLoggedIn ? "none" : "";
+        }
+      });
+    }
+  
+    updateButtonState(isLoggedIn: boolean) {
+      const authButtons = document.getElementById('auth-buttons');
+      
+      if (!AuthButton.authStateInitialized && authButtons) {
+        authButtons.classList.remove('opacity-0');
+        authButtons.classList.add('opacity-100', 'transition-opacity', 'duration-300');
+        AuthButton.authStateInitialized = true;
+      }
+      
+      this.updateAllButtons(isLoggedIn);
+    }
+  
+    connectedCallback() {
+      // Asegurarse de que los botones estén ocultos inicialmente
+      const authButtons = document.getElementById('auth-buttons');
+      if (authButtons && !AuthButton.authStateInitialized) {
+        authButtons.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+      }
+  
+      onAuthStateChanged(auth, (user) => {
+        this.updateButtonState(!!user);
+      });
+    }  }
+  
+  customElements.define("auth-button", AuthButton);
+  </script>

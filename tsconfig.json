@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "allowJs": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "jsxImportSource": "react",
+    "types": [
+      "node", 
+      "react", 
+      "react-dom",
+      "astro/client"  // Añadido para mejor soporte de Astro
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.astro",
+    "src/types/**/*.d.ts",
+    "src/env.d.ts"  // Añadido para soporte de variables de entorno
+  ],
+  "exclude": [
+    "node_modules", 
+    "**/*_backup.astro",
+    "dist",  // Añadido
+    ".vercel"  // Añadido
+  ]
+}

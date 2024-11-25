@@ -1,0 +1,64 @@
+---
+const scheduleData = [
+  { id: 1, title: "Opening Ceremony", time: "09:00 AM", status: "ended" },
+  { id: 2, title: "Keynote Speaker", time: "10:00 AM", status: "in-progress" },
+  { id: 3, title: "Team Formation", time: "11:00 AM", status: "upcoming" },
+  { id: 4, title:"Hacking Begins", time: "12:00 PM", status: "upcoming" },
+  { id: 5, title: "Lunch Break", time: "01:00 PM", status: "upcoming" },
+];
+---
+
+<div id="schedule" class="max-w-4xl mx-auto bg-[#424242] rounded-xl p-8 mb-12 shadow-md shadow-gray-700">
+  <h2 class="text-3xl font-semibold mb-4 text-center text-[#edc418]">Live Schedule</h2>
+  <div class="space-y-4">
+    {scheduleData.map((item) => (
+      <div
+        class={`p-4 rounded-lg ${
+          item.status === "in-progress"
+            ? "bg-[#A1E300] text-[#2F2F2F]"
+            : item.status === "ended"
+            ? "bg-[#acacac] opacity-70 text-white"
+            : "bg-[#4A6FA5]"
+        }`}
+      >
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="text-xl font-semibold">{item.title}</h3>
+            <p class="text-sm">{item.time}</p>
+          </div>
+          {item.status === "in-progress" && (
+            <span 
+              class="px-3 py-3 bg-red-700 text-white text-xs font-semibold rounded-full"
+              style="animation: color-change 2s ease-in-out infinite;"
+            >
+              In Progress
+            </span>
+          )}
+          {item.status === "ended" && (
+            <span 
+              class="px-3 py-2 bg-[#424242] text-white text-xs font-semibold rounded-full"
+              style="cubic-bezier(0.4, 0, 0.6, 1) infinite;"
+            >
+              Ended
+            </span>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+<style>
+/* @keyframes customScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+} */
+
+@keyframes color-change {
+    0%, 100% { background-color: rgb(185 28 28); } /* Azul */
+    50% { background-color: rgb(253, 78, 78); }     /* Verde */
+  }
+</style>

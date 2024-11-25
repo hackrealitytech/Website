@@ -1,0 +1,27 @@
+---
+import CrossmintPayButton from './PayButton';
+---
+
+<div class="w-full max-w-md mx-auto bg-white text-black border rounded-lg shadow-sm justify-center items-center">
+  <div class="p-6 space-y-1.5">
+    <h3 class="text-2xl font-semibold leading-none tracking-tight">Mint Your HackReality NFT</h3>
+    <p class="text-sm text-muted-foreground">
+      Receive a unique NFT to commemorate your participation in HackReality 2024
+    </p>
+  </div>
+  <div class="p-6 pt-0 space-y-4">
+    <div class="space-y-2">
+      <label for="recipient" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Wallet Address</label>
+      <input
+        type="text"
+        id="recipient"
+        class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 text-black"
+        placeholder="Enter your wallet address"
+      />
+    </div>
+    <div class="flex justify-center">
+      <!-- Integración del botón de pago de Crossmint -->
+      <CrossmintPayButton client:load {...({} as any)} />
+    </div>
+  </div>
+</div>

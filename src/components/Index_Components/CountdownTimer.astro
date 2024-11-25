@@ -1,0 +1,128 @@
+---
+// Puedes cambiar esta fecha a la que necesites
+const defaultTargetDate = "2024-12-13T23:59:59";
+
+const { targetDate = defaultTargetDate } = Astro.props;
+
+const timeUnits = ['Days', 'Hours', 'Minutes', 'Seconds'];
+---
+
+<div class="countdown-container max-w-4xl mx-auto bg-[#424242] rounded-xl p-8 mb-12 shadow-md shadow-gray-700 opacity-0 scale-90" data-target-date={targetDate}>
+  <h2 class="text-3xl font-semibold mb-4 text-center text-[#edc418]">Countdown to Innovation</h2>
+  <div class="grid sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-4 text-center">
+    {timeUnits.map((unit) => (
+      <div class="bg-[#7A4F9E] rounded-lg p-4">
+        <div class="text-4xl font-bold mb-2 text-white" data-value={unit.toLowerCase()}>00</div>
+        <div class="text-lg uppercase">{unit}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .countdown-container {
+    animation: fadeInScale 0.5s forwards;
+  }
+
+  .hoverImage {
+    position: relative;
+    align-self: stretch;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+</style>
+
+<script>
+  interface TimeElements {
+    days: HTMLElement | null;
+    hours: HTMLElement | null;
+    minutes: HTMLElement | null;
+    seconds: HTMLElement | null;
+  }
+
+  type TimeUnit = keyof TimeElements;
+
+  function updateCountdown() {
+    const countdowns = document.querySelectorAll<HTMLElement>('.countdown-container');
+    
+    countdowns.forEach(countdown => {
+      const targetDateAttr = countdown.getAttribute('data-target-date');
+      if (!targetDateAttr) return;
+
+      const targetDate = new Date(targetDateAttr).getTime();
+      const timeElements = {
+        days: countdown.querySelector<HTMLElement>('[data-value="days"]'),
+        hours: countdown.querySelector<HTMLElement>('[data-value="hours"]'),
+        minutes: countdown.querySelector<HTMLElement>('[data-value="minutes"]'),
+        seconds: countdown.querySelector<HTMLElement>('[data-value="seconds"]')
+      } as TimeElements;
+
+      function update() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+
+        if (distance < 0) {
+          countdown.innerHTML = '<p class="text-2xl text-center text-[#00B5D4]">¡El evento ha comenzado!</p>';
+          return;
+        }
+
+        const times = {
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000)
+        };
+
+        Object.entries(times).forEach(([unit, value]) => {
+          const timeUnit = unit as TimeUnit;
+          const element = timeElements[timeUnit];
+          if (element) {
+            element.textContent = value.toString().padStart(2, '0');
+          }
+        });
+      }
+
+      update();
+      setInterval(update, 1000);
+    });
+  }
+
+  updateCountdown();
+  document.addEventListener('astro:page-load', updateCountdown);
+
+  // Image hover effect
+  window.onload = function() {
+    const imageElement = document.querySelector('.hoverImage') as HTMLElement;
+    if (imageElement) {
+      const handleMouseMove = (e: MouseEvent) => {
+        const rect = imageElement.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const dx = (x - rect.width / 2) / (rect.width / 2);
+        const dy = (y - rect.height / 2) / (rect.height / 2);
+
+        imageElement.style.transform = `perspective(500px) rotateY(${dx * 5}deg) rotateX(${-dy * 5}deg)`;
+      };
+
+      const handleMouseLeave = () => {
+        imageElement.style.transform = "";
+      };
+
+      imageElement.addEventListener('mousemove', handleMouseMove);
+      imageElement.addEventListener('mouseleave', handleMouseLeave);
+    }
+  }
+</script>

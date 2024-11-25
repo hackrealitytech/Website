@@ -1,0 +1,19 @@
+---
+const sponsorsData = [
+  { id: 1, name: "Crossmint", logo: "/Sponsors/Crossmint_Logo_White.svg" },
+  { id: 2, name: "42 Málaga Fundación Telefónica", logo: "/Sponsors/42_MLG_Logo_White.svg" },
+  { id: 3, name: "Polo Digital de Contenidos", logo: "/Sponsors/Polo_Logo.png" },
+];
+---
+
+<div id="sponsors" class="max-w-4xl mx-auto bg-[#424242] rounded-xl p-8 mb-12 shadow-md shadow-gray-700">
+  <h2 class="text-3xl font-semibold mb-4 text-center text-[#edc418]">Our Sponsors</h2>
+  <div class="grid md:grid-cols-3 gap-8 items-center">
+    {sponsorsData.map((sponsor) => (
+      <div data-key={sponsor.id} class="text-center">
+        <img src={sponsor.logo} alt={sponsor.name} class="fill-white mx-auto mb-6 mt-4" width="150"/>
+        <p class="text-[#81E77A] font-semibold">{sponsor.name}</p>
+      </div>
+    ))}
+  </div>
+</div>

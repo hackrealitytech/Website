@@ -1,0 +1,117 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { FaGithub, FaGoogle } from 'react-icons/fa';
+---
+
+<Layout title="Login">
+  <main class="flex flex-col items-center justify-center min-h-[90svh] px-4 pt-0">
+    <div class="w-full max-w-md mx-auto bg-[#424242] rounded-xl p-8 mb-12 shadow-md shadow-gray-700 text-center">
+      <div class="text-center space-y-2 mb-8">
+        <h2 class="text-3xl font-bold text-purple-400">Welcome back!</h2>
+        <p class="text-green-400">Let's build something great</p>
+      </div>
+
+      <div class="space-y-4">
+        <button
+          id="githubLogin"
+          class="w-full flex items-center justify-center px-4 py-2 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors"
+        >
+          <FaGithub className="w-5 h-5 mr-2" />
+          Continue with GitHub
+        </button>
+
+        <button
+          id="googleLogin"
+          class="w-full flex items-center justify-center px-4 py-2 border border-slate-300 rounded-lg shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 transition-colors"
+        >
+          <FaGoogle className="w-5 h-5 mr-2" />
+          Continue with Google
+        </button>
+      </div>
+      <div id="userInfo" class="hidden text-white font-bold">
+        <p id="userEmail" class="mt-4"></p>
+        <button id="logoutButton" class="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg">Logout</button>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+import { auth } from '../lib/firebase';
+import { 
+    GoogleAuthProvider, 
+    GithubAuthProvider, 
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut 
+} from 'firebase/auth';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const googleButton = document.getElementById('googleLogin')!;
+    const githubButton = document.getElementById('githubLogin')!;
+    const userInfo = document.getElementById('userInfo')!;
+    const userEmail = document.getElementById('userEmail')!;
+    const logoutButton = document.getElementById('logoutButton')!;
+    const successMessage = document.createElement('p');
+
+    // Proveedores de autenticación
+    const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
+
+    // Manejar el estado de autenticación
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            googleButton.classList.add('hidden');
+            githubButton.classList.add('hidden');
+            userInfo.classList.remove('hidden');
+            if (user.email) {
+                userEmail.textContent = user.email;
+            }
+
+            // Mostrar mensaje de autenticación exitosa y redirigir después de 3 segundos
+            successMessage.textContent = "Autenticación exitosa, redirigiendo...";
+            userInfo.appendChild(successMessage);
+            setTimeout(() => {
+                window.location.href = '/users';
+            }, 3000);
+
+        } else {
+            googleButton.classList.remove('hidden');
+            githubButton.classList.remove('hidden');
+            userInfo.classList.add('hidden');
+            userEmail.textContent = '';
+            if (userInfo.contains(successMessage)) {
+                userInfo.removeChild(successMessage);
+            }
+        }
+    });
+
+    // Login con Google
+    googleButton.addEventListener('click', async () => {
+        try {
+            await signInWithPopup(auth, googleProvider);
+        } catch (error) {
+            console.error('Error al iniciar sesión con Google:', error);
+        }
+    });
+
+    // Login con GitHub
+    githubButton.addEventListener('click', async () => {
+        try {
+            await signInWithPopup(auth, githubProvider);
+        } catch (error) {
+            console.error('Error al iniciar sesión con GitHub:', error);
+        }
+    });
+
+    // Logout
+    logoutButton.addEventListener('click', async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+        }
+    });
+});
+
+</script>

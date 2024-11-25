@@ -1,0 +1,22 @@
+---
+import { Globe, Calendar } from 'lucide-react';
+
+const futureEventsData = [
+  { id: 1, name: "Frontend Hackathon", date: "To be determined ", location: "To be determined " },
+  { id: 2, name: "Blockchain Revolution", date: "To be determined ", location: "42 Málaga" },
+  { id: 3, name: "AI Challenge", date: "To be determined ", location: "To be determined " },
+];
+---
+
+<div id="future-events" class="max-w-4xl mx-auto bg-[#424242] rounded-xl p-8 mb-12 shadow-md shadow-gray-700">
+  <h2 class="text-3xl font-semibold mb-4 text-center text-[#edc418]">Future Events</h2>
+  <div class="space-y-4">
+    {futureEventsData.map((event) => (
+      <div data-key={event.id} class="bg-[#4A6FA5] p-4 rounded-lg">
+        <h3 class="text-xl font-semibold text-[#81E77A]">{event.name}</h3>
+        <p class="text-sm"><Calendar className="inline mr-2" size={16}/>{event.date}</p>
+        <p class="text-sm"><Globe className="inline mr-2" size={16}/>{event.location}</p>
+      </div>
+    ))}
+  </div>
+</div>
