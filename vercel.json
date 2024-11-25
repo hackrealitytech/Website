@@ -4,8 +4,8 @@
   "devCommand": "bun run dev",
   "framework": "astro",
   "functions": {
-    "api/**/*": {
-      "runtime": "nodejs18.x"
+    "api/*.js": {
+      "runtime": "@vercel/node@18"
     }
   }
 }

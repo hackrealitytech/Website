@@ -18,9 +18,18 @@ export default defineConfig({
   ],
   output: "server",
   adapter: vercel({
-    analytics: true,
-    nodeVersion: '18',
-    functionPerRoute: false
+    webAnalytics: {
+      enabled: true,
+    },
+    speedInsights: {
+      enabled: true,
+    },
+    imageService: true,
+    imagesConfig: {
+      sizes: [640, 750, 828, 1080, 1200, 1920],
+      domains: [],
+      minimumCacheTTL: 60,
+    },
   }),
   vite: {
     build: {
