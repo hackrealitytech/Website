@@ -1,13 +1,3 @@
 {
-  "version": 2,
-  "framework": "astro",
-  "buildCommand": "bun run build",
-  "devCommand": "bun run dev",
-  "installCommand": "bun install",
-  "functions": {
-    "src/pages/**/*": {
-      "runtime": "@vercel/node@18.0.0",
-      "maxDuration": 10
-    }
-  }
+  "framework": "astro"
 }
