@@ -28,7 +28,7 @@
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@types/node": "^22.9.3",
-    "astro": "^4.16.13",
+    "astro": "^4.16.16",
     "astro-icon": "^1.1.4",
     "astro-navbar": "^2.3.6",
     "class-variance-authority": "^0.7.0",
