@@ -38,17 +38,20 @@ export default defineConfig({
     }
   }),
   vite: {
-    define: {
-      'process.env.NODE_ENV': '"production"'
-    },
-    ssr: {
-      noExternal: ['react-icons', '@astrojs/*']
-    },
     build: {
       target: 'es2022',
+      ssrOptions: {
+        target: 'node',
+        format: 'esm'
+      },
       rollupOptions: {
-        external: ['esbuild']
+        output: {
+          format: 'esm'
+        }
       }
+    },
+    ssr: {
+      noExternal: ['react-icons']
     }
   }
 });
