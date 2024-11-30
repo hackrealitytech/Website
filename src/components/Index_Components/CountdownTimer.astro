@@ -7,7 +7,7 @@ const { targetDate = defaultTargetDate } = Astro.props;
 const timeUnits = ['Days', 'Hours', 'Minutes', 'Seconds'];
 ---
 
-<div class="countdown-container max-w-4xl mx-auto bg-[#424242] rounded-xl p-8 mb-12 shadow-md shadow-gray-700 opacity-0 scale-90" data-target-date={targetDate}>
+<div class="countdown-container max-w-4xl mx-auto bg-[#272727] rounded-xl p-8 mb-12 shadow-md shadow-gray-700 opacity-0 scale-90" data-target-date={targetDate}>
   <h2 class="text-3xl font-semibold mb-4 text-center text-[#edc418]">Countdown to Innovation</h2>
   <div class="grid sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-4 text-center">
     {timeUnits.map((unit) => (

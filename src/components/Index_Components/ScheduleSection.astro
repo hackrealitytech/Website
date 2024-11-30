@@ -8,7 +8,7 @@ const scheduleData = [
 ];
 ---
 
-<div id="schedule" class="max-w-4xl mx-auto bg-[#424242] rounded-xl p-8 mb-12 shadow-md shadow-gray-700">
+<div id="schedule" class="max-w-4xl mx-auto bg-[#272727] rounded-xl p-8 mb-12 shadow-md shadow-gray-700">
   <h2 class="text-3xl font-semibold mb-4 text-center text-[#edc418]">Live Schedule</h2>
   <div class="space-y-4">
     {scheduleData.map((item) => (
@@ -36,7 +36,7 @@ const scheduleData = [
           )}
           {item.status === "ended" && (
             <span 
-              class="px-3 py-2 bg-[#424242] text-white text-xs font-semibold rounded-full"
+              class="px-3 py-2 bg-[#272727] text-white text-xs font-semibold rounded-full"
               style="cubic-bezier(0.4, 0, 0.6, 1) infinite;"
             >
               Ended
