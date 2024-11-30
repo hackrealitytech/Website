@@ -36,7 +36,7 @@ import { FaGithub, FaGoogle } from 'react-icons/fa';
   </main>
 </Layout>
 
-<script>
+<script client:only="react">
 import { auth } from '../lib/firebase';
 import { 
     GoogleAuthProvider, 
@@ -46,13 +46,15 @@ import {
     signOut 
 } from 'firebase/auth';
 
-document.addEventListener('DOMContentLoaded', () => {
-    const googleButton = document.getElementById('googleLogin')!;
-    const githubButton = document.getElementById('githubLogin')!;
-    const userInfo = document.getElementById('userInfo')!;
-    const userEmail = document.getElementById('userEmail')!;
-    const logoutButton = document.getElementById('logoutButton')!;
+const initAuth = () => {
+    const googleButton = document.getElementById('googleLogin');
+    const githubButton = document.getElementById('githubLogin');
+    const userInfo = document.getElementById('userInfo');
+    const userEmail = document.getElementById('userEmail');
+    const logoutButton = document.getElementById('logoutButton');
     const successMessage = document.createElement('p');
+
+    if (!googleButton || !githubButton || !userInfo || !userEmail || !logoutButton) return;
 
     // Proveedores de autenticación
     const googleProvider = new GoogleAuthProvider();
@@ -112,6 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error al cerrar sesión:', error);
         }
     });
-});
+};
 
+// Inicializar la autenticación cuando el DOM esté listo
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAuth);
+} else {
+  initAuth();
+}
 </script>

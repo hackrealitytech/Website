@@ -20,32 +20,11 @@ export default defineConfig({
   adapter: vercel(),
   vite: {
     ssr: {
-      noExternal: [
-        'lucide-react',
-        '@astrojs/*',
-        'react-icons',
-        '@crossmint/*',
-        'firebase',
-        'firebase/auth',
-        'firebase/firestore',
-        'firebase/app'
-      ]
-    },
-    resolve: {
-      alias: {
-        '@firebase/auth': '@firebase/auth/dist/esm2017/index.js',
-        '@firebase/app': '@firebase/app/dist/esm2017/index.js',
-        'firebase/auth': 'firebase/auth/dist/esm2017/index.js',
-        'firebase/app': 'firebase/app/dist/esm2017/index.js'
-      }
-    },
-    build: {
-      rollupOptions: {
-        external: ['@astrojs/tailwind/client.js'],
-      }
+      noExternal: ['react-icons'],
+      external: ['firebase', '@firebase/*']
     },
     optimizeDeps: {
-      include: ['lucide-react', 'firebase/auth', 'firebase/app']
+      exclude: ['firebase', '@firebase/*']
     }
   }
 });
