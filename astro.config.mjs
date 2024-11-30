@@ -33,29 +33,13 @@ export default defineConfig({
   }),
   vite: {
     build: {
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: true,
-        },
-      },
-      target: 'esnext',  // Add this line
-      rollupOptions: {    // Add this section
-        output: {
-          format: 'esm'
-        }
-      }
+      minify: false, // Changed from terser to false temporarily
     },
-    optimizeDeps: {      // Add this section
-      esbuildOptions: {
-        target: 'esnext',
-        platform: 'node'
-      }
+    optimizeDeps: {
+      exclude: ['@astrojs/vercel', '@vercel/node']
     },
-    resolve: {
-      alias: {
-        '@': '/src',
-      },
-    },
-  },
+    ssr: {
+      noExternal: ['react-icons', '@astrojs/*']
+    }
+  }
 });
