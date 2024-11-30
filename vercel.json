@@ -1,12 +1,7 @@
 {
-  "buildCommand": "astro build",
-  "outputDirectory": ".vercel/output/static",
   "framework": "astro",
-  "regions": ["iad1"],
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node"
-    }
-  ]
+  "buildCommand": "astro build",
+  "devCommand": "astro dev",
+  "installCommand": "bun install",
+  "outputDirectory": ".vercel/output/static"
 }

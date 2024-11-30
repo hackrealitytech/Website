@@ -23,7 +23,6 @@ export default defineConfig({
     })
   ],
   output: "server",
-  outDir: ".vercel/output/static",
   adapter: vercel({
     webAnalytics: {
       enabled: true,
@@ -36,15 +35,16 @@ export default defineConfig({
       sizes: [640, 750, 828, 1080, 1200, 1920],
       domains: [],
       minimumCacheTTL: 60,
-    }
+    },
+    includeFiles: [".vercel/output/static/**/*"],
+    functionPerRoute: true
   }),
   vite: {
     build: {
       target: 'esnext',
       modulePreload: {
         polyfill: false
-      },
-      outDir: '.vercel/output/static'
+      }
     },
     optimizeDeps: {
       exclude: ['@astrojs/vercel', '@vercel/node'],
