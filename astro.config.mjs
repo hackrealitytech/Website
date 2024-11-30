@@ -7,8 +7,8 @@ import partytown from "@astrojs/partytown";
 
 export default defineConfig({
   integrations: [
-    react(), 
-    tailwind(), 
+    react(),
+    tailwind(),
     partytown(),
     icon({
       include: {
@@ -39,6 +39,18 @@ export default defineConfig({
           drop_console: true,
         },
       },
+      target: 'esnext',  // Add this line
+      rollupOptions: {    // Add this section
+        output: {
+          format: 'esm'
+        }
+      }
+    },
+    optimizeDeps: {      // Add this section
+      esbuildOptions: {
+        target: 'esnext',
+        platform: 'node'
+      }
     },
     resolve: {
       alias: {
