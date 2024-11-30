@@ -1,5 +1,5 @@
 ---
-import CrossmintPayButton from './PayButton';
+import { CrossmintPayButton } from './PayButton';
 ---
 
 <div class="w-full max-w-md mx-auto bg-white text-black border rounded-lg shadow-sm justify-center items-center">
@@ -11,7 +11,9 @@ import CrossmintPayButton from './PayButton';
   </div>
   <div class="p-6 pt-0 space-y-4">
     <div class="space-y-2">
-      <label for="recipient" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Wallet Address</label>
+      <label for="recipient" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+        Wallet Address
+      </label>
       <input
         type="text"
         id="recipient"
@@ -20,8 +22,7 @@ import CrossmintPayButton from './PayButton';
       />
     </div>
     <div class="flex justify-center">
-      <!-- Integración del botón de pago de Crossmint -->
-      <CrossmintPayButton client:load {...({} as any)} />
+      <CrossmintPayButton client:only="react" />
     </div>
   </div>
 </div>
