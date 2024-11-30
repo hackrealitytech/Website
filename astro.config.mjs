@@ -17,5 +17,18 @@ export default defineConfig({
     })
   ],
   output: "server",
-  adapter: vercel()
+  adapter: vercel(),
+  vite: {
+    ssr: {
+      noExternal: ['lucide-react', '@astrojs/*', 'react-icons', '@crossmint/*']
+    },
+    build: {
+      rollupOptions: {
+        external: ['@astrojs/tailwind/client.js']
+      }
+    },
+    optimizeDeps: {
+      include: ['lucide-react']
+    }
+  }
 });
