@@ -1,7 +1,5 @@
 {
-  "framework": "astro",
-  "buildCommand": "astro build",
-  "devCommand": "astro dev",
-  "installCommand": "bun install",
-  "outputDirectory": ".vercel/output/static"
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": "astro"
 }

@@ -7,15 +7,9 @@ import partytown from "@astrojs/partytown";
 
 export default defineConfig({
   integrations: [
-    react({
-      include: ['@astrojs/*']
-    }),
+    react(),
     tailwind(),
-    partytown({
-      config: {
-        forward: ['dataLayer.push']
-      }
-    }),
+    partytown(),
     icon({
       include: {
         mdi: ["*"],
@@ -23,35 +17,5 @@ export default defineConfig({
     })
   ],
   output: "server",
-  adapter: vercel({
-    webAnalytics: {
-      enabled: true,
-    },
-    speedInsights: {
-      enabled: true,
-    },
-    imageService: true,
-    imagesConfig: {
-      sizes: [640, 750, 828, 1080, 1200, 1920],
-      domains: [],
-      minimumCacheTTL: 60,
-    }
-  }),
-  vite: {
-    build: {
-      target: 'es2022',
-      ssrOptions: {
-        target: 'node',
-        format: 'esm'
-      },
-      rollupOptions: {
-        output: {
-          format: 'esm'
-        }
-      }
-    },
-    ssr: {
-      noExternal: ['react-icons']
-    }
-  }
+  adapter: vercel()
 });
