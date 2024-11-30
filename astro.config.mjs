@@ -35,25 +35,20 @@ export default defineConfig({
       sizes: [640, 750, 828, 1080, 1200, 1920],
       domains: [],
       minimumCacheTTL: 60,
-    },
-    includeFiles: [".vercel/output/static/**/*"],
-    functionPerRoute: true
+    }
   }),
   vite: {
-    build: {
-      target: 'esnext',
-      modulePreload: {
-        polyfill: false
-      }
-    },
-    optimizeDeps: {
-      exclude: ['@astrojs/vercel', '@vercel/node'],
-      esbuildOptions: {
-        target: 'esnext'
-      }
+    define: {
+      'process.env.NODE_ENV': '"production"'
     },
     ssr: {
       noExternal: ['react-icons', '@astrojs/*']
+    },
+    build: {
+      target: 'es2022',
+      rollupOptions: {
+        external: ['esbuild']
+      }
     }
   }
 });
