@@ -1,46 +1,51 @@
-  
-	:root {
-		--accent: 136, 58, 234;
-		--accent-light: 224, 204, 250;
-		--accent-dark: 49, 10, 101;
-		--accent-gradient: linear-gradient(45deg,rgb(var(--accent)),rgb(var(--accent-light)) 30%,white 60%);
-	}
-	html {
-		font-family: "Bricolage Grotesque", sans-serif;
-		/* cursor: url("/Cursor/Move Prank Cursor.cur"), auto; */
-		background-color: #2b2b2b;
-		background-image: url("/Background/background.svg");
-	}
-	body {
-		margin: 0;
-		padding: 0;
-	}
+  :root {
+  	--accent: 136, 58, 234;
+  	--accent-light: 224, 204, 250;
+  	--accent-dark: 49, 10, 101;
+  	--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
+  }
 
-	main {
-		padding: 2rem;
-		min-height: 200vh; /* Para permitir el scroll */
-	}
-	code {
-		font-family:
-			Menlo,
-			Monaco,
-			Lucida Console,
-			Liberation Mono,
-			DejaVu Sans Mono,
-			Bitstream Vera Sans Mono,
-			Courier New,
-			monospace;
-	}
-  
+  html {
+	font-family: "Bricolage Grotesque", sans-serif;
+	/* cursor: url("/Cursor/Move Prank Cursor.cur"), auto; */
+	background-color: rgba(43, 43, 43, 0.925); /* El último valor 0.8 es la opacidad */
+	background-image: url("/Background/background.svg");
+	background-position: center;
+  }
+
+  body {
+  	margin: 0;
+  	padding: 0;
+  }
+
+  main {
+  	padding: 2rem;
+  	min-height: 200vh;
+  	/* Para permitir el scroll */
+  }
+
+  code {
+  	font-family:
+  		Menlo,
+  		Monaco,
+  		Lucida Console,
+  		Liberation Mono,
+  		DejaVu Sans Mono,
+  		Bitstream Vera Sans Mono,
+  		Courier New,
+  		monospace;
+  }
+
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
+  	from {
+  		opacity: 0;
+  	}
+
+  	to {
+  		opacity: 1;
+  	}
   }
 
   .fade-in {
-    animation: fadeIn 1s ease-in-out;
+  	animation: fadeIn 1s ease-in-out;
   }
